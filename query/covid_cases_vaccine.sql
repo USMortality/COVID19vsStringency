@@ -12,6 +12,7 @@ FROM
             owid.imp_world
         WHERE
             date = '2021-09-26'
+            AND total_cases_per_million NOT IN (0, "")
     ) a
     JOIN(
         SELECT
@@ -21,6 +22,7 @@ FROM
             owid.imp_world
         WHERE
             date = '2021-12-31'
+            AND total_cases_per_million NOT IN (0, "")
     ) b
     JOIN (
         SELECT
