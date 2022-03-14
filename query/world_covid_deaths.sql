@@ -9,11 +9,11 @@ FROM
         FROM
             owid.imp_world
         WHERE
-            location = "World"
+            `location` = "World"
     ) a
 WHERE
-    `date` >= STR_TO_DATE("2021-06-01", "%Y-%c-%d")
-    AND `date` < STR_TO_DATE("2022-03-09", "%Y-%c-%d")
+    `date` >= STR_TO_DATE("2021-10-01", "%Y-%c-%d")
+    AND `date` < STR_TO_DATE("2022-03-13", "%Y-%c-%d")
 UNION
 ALL
 SELECT
@@ -27,8 +27,8 @@ FROM
         FROM
             owid.imp_world
         WHERE
-            location = "World"
+            `location` = "World"
     ) a
 WHERE
-    `date` >= STR_TO_DATE("2020-06-01", "%Y-%c-%d")
-    AND `date` < STR_TO_DATE("2021-03-09", "%Y-%c-%d");
+    `date` >= STR_TO_DATE("2020-10-01", "%Y-%c-%d")
+    AND `date` < STR_TO_DATE("2021-03-13", "%Y-%c-%d")
