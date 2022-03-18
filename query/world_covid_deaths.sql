@@ -31,4 +31,4 @@ FROM
     ) a
 WHERE
     `date` >= STR_TO_DATE("2020-10-01", "%Y-%c-%d")
-    AND `date` < STR_TO_DATE("2021-03-13", "%Y-%c-%d")
+    AND `date` < STR_TO_DATE("2021-03-18", "%Y-%c-%d");
