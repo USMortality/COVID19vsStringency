@@ -8,7 +8,7 @@ SELECT
         cast (people_fully_vaccinated_per_hundred AS float)
     ) AS people_fully_vaccinated_per_hundred
 FROM
-    imp_world
+    owid.imp_world
 WHERE
     iso_code IN ("DEU", "SWE")
 GROUP BY
