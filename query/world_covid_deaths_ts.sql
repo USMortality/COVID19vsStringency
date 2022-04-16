@@ -1,11 +1,15 @@
 SELECT
     '2020/21' AS flu_season,
-    sum(new_deaths) AS deaths
+    `date`,
+    date_format(`date`, "%c-%d") AS `date_short`,
+    new_deaths AS deaths,
+    people_vaccinated_per_hundred
 FROM
     (
         SELECT
             STR_TO_DATE(`date`, "%Y-%c-%d") AS `date`,
-            new_deaths
+            new_deaths,
+            people_vaccinated_per_hundred
         FROM
             owid.imp_world
         WHERE
@@ -18,12 +22,16 @@ UNION
 ALL
 SELECT
     '2021/22' AS flu_season,
-    sum(new_deaths) AS deaths
+    `date`,
+    date_format(`date`, "%c-%d") AS `date_short`,
+    new_deaths AS deaths,
+    people_vaccinated_per_hundred
 FROM
     (
         SELECT
             STR_TO_DATE(`date`, "%Y-%c-%d") AS `date`,
-            new_deaths
+            new_deaths,
+            people_vaccinated_per_hundred
         FROM
             owid.imp_world
         WHERE
