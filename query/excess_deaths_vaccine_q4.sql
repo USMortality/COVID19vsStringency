@@ -46,30 +46,6 @@ FROM
     ) b ON a.location = b.location
     AND a.date = b.date;
 
-DROP VIEW IF EXISTS owid.excess_2020_q4;
-
-CREATE VIEW owid.excess_2020_q4 AS
-SELECT
-    a.continent,
-    a.location,
-    b.date,
-    excess_mortality_cumulative_per_million AS excess_mortality_cumulative_per_million_2020_q4
-FROM
-    owid.imp_world a
-    JOIN (
-        SELECT
-            location,
-            max(date) AS date
-        FROM
-            owid.imp_world a
-        WHERE
-            left(date, 7) = '2020-12'
-            AND excess_mortality_cumulative_per_million NOT IN (0, "")
-        GROUP BY
-            location
-    ) b ON a.location = b.location
-    AND a.date = b.date;
-
 DROP VIEW IF EXISTS owid.excess_2021_q4;
 
 CREATE VIEW owid.excess_2021_q4 AS
@@ -94,22 +70,46 @@ FROM
     ) b ON a.location = b.location
     AND a.date = b.date;
 
-DROP VIEW IF EXISTS owid.excess_diff;
+DROP VIEW IF EXISTS owid.excess_2022_q4;
 
-CREATE VIEW owid.excess_diff AS
+CREATE VIEW owid.excess_2022_q4 AS
+SELECT
+    a.continent,
+    a.location,
+    b.date,
+    excess_mortality_cumulative_per_million AS excess_mortality_cumulative_per_million_2022_q4
+FROM
+    owid.imp_world a
+    JOIN (
+        SELECT
+            location,
+            max(date) AS date
+        FROM
+            owid.imp_world a
+        WHERE
+            left(date, 7) = '2022-12'
+            AND excess_mortality_cumulative_per_million NOT IN (0, "")
+        GROUP BY
+            location
+    ) b ON a.location = b.location
+    AND a.date = b.date;
+
+DROP VIEW IF EXISTS owid.excess_diff_q4;
+
+CREATE VIEW owid.excess_diff_q4 AS
 SELECT
     continent,
     location,
-    excess_mortality_cumulative_per_million_2021,
-    excess_mortality_cumulative_per_million_2020,
-    excess_mortality_cumulative_per_million_2021 - excess_mortality_cumulative_per_million_2020 AS "excess_mortality_cumulative_per_million_delta_q4"
+    excess_mortality_cumulative_per_million_2021_q4,
+    excess_mortality_cumulative_per_million_2020_q4,
+    excess_mortality_cumulative_per_million_2021_q4 - excess_mortality_cumulative_per_million_2020_q4 AS "excess_mortality_cumulative_per_million_delta_q4"
 FROM
     (
         SELECT
             a.continent,
             a.location,
-            a.excess_mortality_cumulative_per_million_2021_q4 - b.excess_mortality_cumulative_per_million_2021_q3 AS "excess_mortality_cumulative_per_million_2021",
-            c.excess_mortality_cumulative_per_million_2020_q4 - d.excess_mortality_cumulative_per_million_2020_q3 AS "excess_mortality_cumulative_per_million_2020"
+            c.excess_mortality_cumulative_per_million_2020_q4 - d.excess_mortality_cumulative_per_million_2020_q3 AS "excess_mortality_cumulative_per_million_2020_q4",
+            a.excess_mortality_cumulative_per_million_2021_q4 - b.excess_mortality_cumulative_per_million_2021_q3 AS "excess_mortality_cumulative_per_million_2021_q4"
         FROM
             owid.excess_2021_q4 a
             JOIN owid.excess_2021_q3 b
@@ -123,16 +123,20 @@ SELECT
     a.location,
     a.excess_mortality_cumulative_per_million_delta_q4,
     people_fully_vaccinated_per_hundred,
-    a.excess_mortality_cumulative_per_million_2021,
-    a.excess_mortality_cumulative_per_million_2020
+    a.excess_mortality_cumulative_per_million_2021_q4,
+    a.excess_mortality_cumulative_per_million_2020_q4
 FROM
-    owid.excess_diff a
+    owid.excess_diff_q4 a
     JOIN (
         SELECT
+            date,
             location,
-            people_fully_vaccinated_per_hundred
+            avg(people_fully_vaccinated_per_hundred) / 100 AS people_fully_vaccinated_per_hundred
         FROM
             owid.imp_world
         WHERE
-            date = '2021-09-26'
+            left(date, 7) IN ('2021-10', '2021-11', '2021-12')
+            AND people_fully_vaccinated_per_hundred <> ""
+        GROUP BY
+            location
     ) b ON a.location = b.location;
