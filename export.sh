@@ -23,3 +23,5 @@ mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_2.sql >./out/excess
 mysql -h 127.0.0.1 -u root owid <query/world_covid_deaths.sql >./out/world_covid_deaths.csv
 mysql -h 127.0.0.1 -u root owid <query/world_covid_deaths_ts.sql >./out/world_covid_deaths_ts.csv
 mysql -h 127.0.0.1 -u root owid <query/correl_acm_c19deaths.sql >./out/correl_acm_c19deaths.csv
+
+mysql -h 127.0.0.1 -u root owid <query/stringency_tl_avg.sql >./out/stringency_tl_avg.csv
