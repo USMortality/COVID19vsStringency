@@ -6,24 +6,24 @@ mysql -h 127.0.0.1 -u root -e "SET GLOBAL sql_mode = '';"
 
 ./import_csv.sh data/world.csv owid
 
-mysql -h 127.0.0.1 -u root owid <query/covid_deaths_eu.sql >./out/covid_deaths_eu.csv
-mysql -h 127.0.0.1 -u root owid <query/covid_cases_eu.sql >./out/covid_cases_eu.csv
-mysql -h 127.0.0.1 -u root owid <query/covid_deaths.sql >./out/covid_deaths.csv
-mysql -h 127.0.0.1 -u root owid <query/covid_cases.sql >./out/covid_cases.csv
+mysql -h 127.0.0.1 -u root owid <query/covid_deaths_eu.sql >./out/covid_deaths_eu.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_cases_eu.sql >./out/covid_cases_eu.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_deaths.sql >./out/covid_deaths.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_cases.sql >./out/covid_cases.tsv
 
-mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine_eu.sql >./out/covid_cases_vaccine_eu.csv
-mysql -h 127.0.0.1 -u root owid <query/covid_deaths_vaccine_eu.sql >./out/covid_deaths_vaccine_eu.csv
-mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine.sql >./out/covid_cases_vaccine.csv
-mysql -h 127.0.0.1 -u root owid <query/covid_deaths_vaccine.sql >./out/covid_deaths_vaccine.csv
+mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine_eu.sql >./out/covid_cases_vaccine_eu.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_deaths_vaccine_eu.sql >./out/covid_deaths_vaccine_eu.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine.sql >./out/covid_cases_vaccine.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_deaths_vaccine.sql >./out/covid_deaths_vaccine.tsv
 
-mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_eu.sql >./out/excess_deaths_vaccine_eu.csv
-mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine.sql >./out/excess_deaths_vaccine.csv
-mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_q4.sql >./out/excess_deaths_vaccine_q4.csv
-mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_q1.sql >./out/excess_deaths_vaccine_q1.csv
-mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_q4_q1.sql >./out/excess_deaths_vaccine_q4_q1.csv
+mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_eu.sql >./out/excess_deaths_vaccine_eu.tsv
+mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine.sql >./out/excess_deaths_vaccine.tsv
+mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_q4.sql >./out/excess_deaths_vaccine_q4.tsv
+mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_q1.sql >./out/excess_deaths_vaccine_q1.tsv
+mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_q4_q1.sql >./out/excess_deaths_vaccine_q4_q1.tsv
 
-mysql -h 127.0.0.1 -u root owid <query/world_covid_deaths.sql >./out/world_covid_deaths.csv
-mysql -h 127.0.0.1 -u root owid <query/world_covid_deaths_ts.sql >./out/world_covid_deaths_ts.csv
-mysql -h 127.0.0.1 -u root owid <query/correl_acm_c19deaths.sql >./out/correl_acm_c19deaths.csv
+mysql -h 127.0.0.1 -u root owid <query/world_covid_deaths.sql >./out/world_covid_deaths.tsv
+mysql -h 127.0.0.1 -u root owid <query/world_covid_deaths_ts.sql >./out/world_covid_deaths_ts.tsv
+mysql -h 127.0.0.1 -u root owid <query/correl_acm_c19deaths.sql >./out/correl_acm_c19deaths.tsv
 
-mysql -h 127.0.0.1 -u root owid <query/stringency_tl_avg.sql >./out/stringency_tl_avg.csv
+mysql -h 127.0.0.1 -u root owid <query/stringency_tl_avg.sql >./out/stringency_tl_avg.tsv
