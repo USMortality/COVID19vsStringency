@@ -46,6 +46,30 @@ FROM
     ) b ON a.location = b.location
     AND a.date = b.date;
 
+DROP VIEW IF EXISTS owid.excess_2020_q4;
+
+CREATE VIEW owid.excess_2020_q4 AS
+SELECT
+    a.continent,
+    a.location,
+    b.date,
+    excess_mortality_cumulative_per_million AS excess_mortality_cumulative_per_million_2020_q4
+FROM
+    owid.imp_world a
+    JOIN (
+        SELECT
+            location,
+            max(date) AS date
+        FROM
+            owid.imp_world a
+        WHERE
+            left(date, 7) = '2020-12'
+            AND excess_mortality_cumulative_per_million NOT IN (0, "")
+        GROUP BY
+            location
+    ) b ON a.location = b.location
+    AND a.date = b.date;
+
 DROP VIEW IF EXISTS owid.excess_2021_q4;
 
 CREATE VIEW owid.excess_2021_q4 AS
