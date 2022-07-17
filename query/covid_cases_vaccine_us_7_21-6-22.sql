@@ -3,34 +3,58 @@ SELECT
     round(
         (total_cases_end - total_cases_start) / population * 1000000
     ) AS total_cases_per_million,
-    administered_dose1_pop_pct
+    round(series_complete_pop_pct / 100, 2) AS 'series_complete_pop_pct'
 FROM
     (
         SELECT
             state,
-            tot_cases AS total_cases_start
+            sum(total_cases_start) AS 'total_cases_start'
         FROM
-            owid.imp_us_cases
-        WHERE
-            submission_date = '06/30/2021'
+            (
+                SELECT
+                    CASE
+                        WHEN state IN ('NY', 'NYC') THEN 'NY'
+                        ELSE state
+                    END AS 'state',
+                    tot_cases AS total_cases_start
+                FROM
+                    owid.imp_us_cases
+                WHERE
+                    submission_date = '06/30/2021'
+            ) a
+        GROUP BY
+            state
     ) a
     JOIN(
         SELECT
             state,
-            tot_cases AS total_cases_end
+            sum(total_cases_end) AS 'total_cases_end'
         FROM
-            owid.imp_us_cases
-        WHERE
-            submission_date = '06/30/2022'
+            (
+                SELECT
+                    CASE
+                        WHEN state IN ('NY', 'NYC') THEN 'NY'
+                        ELSE state
+                    END AS 'state',
+                    tot_cases AS total_cases_end
+                FROM
+                    owid.imp_us_cases
+                WHERE
+                    submission_date = '07/01/2022'
+            ) a
+        GROUP BY
+            state
     ) b
     JOIN (
         SELECT
             location AS 'state',
-            administered_dose1_pop_pct
+            series_complete_pop_pct
         FROM
-            owid.imp_us_vaccine
+            owid.imp_us_vaccine a
         WHERE
-            date = '06/30/2022'
+            date = '07/01/2022'
+        ORDER BY
+            location -- AND date_type = 'Report'
     ) c
     JOIN (
         SELECT
@@ -41,7 +65,9 @@ FROM
             JOIN owid.imp_us_states_iso2 b ON a.jurisdiction = b.state
         WHERE
             year = 2022
-            AND age_group = 'all' -- AND trim(code) = "AL"
+            AND age_group = 'all'
     ) d ON a.state = b.state
     AND b.state = c.state
-    AND c.state = d.state;
+    AND c.state = d.state
+ORDER BY
+    state;
