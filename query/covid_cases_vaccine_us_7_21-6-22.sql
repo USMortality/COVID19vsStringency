@@ -3,7 +3,7 @@ SELECT
     round(
         (total_cases_end - total_cases_start) / population * 1000000
     ) AS total_cases_per_million,
-    round(series_complete_pop_pct / 100, 2) AS 'series_complete_pop_pct'
+    series_complete_pop_pct
 FROM
     (
         SELECT
@@ -48,13 +48,15 @@ FROM
     JOIN (
         SELECT
             location AS 'state',
-            series_complete_pop_pct
+            round(avg(series_complete_pop_pct) / 100, 3) AS 'series_complete_pop_pct'
         FROM
             owid.imp_us_vaccine a
         WHERE
-            date = '07/01/2022'
-        ORDER BY
-            location -- AND date_type = 'Report'
+            str_to_date(date, '%m/%d/%Y') >= str_to_date('07/01/2021', '%m/%d/%Y')
+            AND str_to_date(date, '%m/%d/%Y') < str_to_date('07/01/2022', '%m/%d/%Y')
+            AND date_type = 'Admin'
+        GROUP BY
+            location
     ) c
     JOIN (
         SELECT
