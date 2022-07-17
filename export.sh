@@ -21,6 +21,7 @@ mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine.sql >./out/covid_case
 mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine_2022.sql >./out/covid_cases_vaccine_2022.tsv
 mysql -h 127.0.0.1 -u root owid <query/covid_deaths_vaccine.sql >./out/covid_deaths_vaccine.tsv
 mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine_us_2022.sql >./out/covid_cases_vaccine_us_2022.tsv
+mysql -h 127.0.0.1 -u root owid <query/covid_cases_vaccine_us_7_21-6-22.sql >./out/covid_cases_vaccine_us_7_21-6-22.tsv
 
 mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine_eu.sql >./out/excess_deaths_vaccine_eu.tsv
 mysql -h 127.0.0.1 -u root owid <query/excess_deaths_vaccine.sql >./out/excess_deaths_vaccine.tsv
