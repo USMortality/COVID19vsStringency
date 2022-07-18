@@ -1,8 +1,11 @@
 SELECT
     a.state,
     round(
-        (total_cases_end - total_cases_start) / population * 1000000
-    ) AS total_cases_per_million,
+        (total_cases_end - total_cases_start) / population * 1000000 / datediff(
+            str_to_date('07/15/2022', '%m/%d/%Y'),
+            str_to_date('03/01/2022', '%m/%d/%Y')
+        )
+    ) AS total_cases_per_million_per_day,
     series_complete_pop_pct
 FROM
     (
