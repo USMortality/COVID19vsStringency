@@ -1,9 +1,3 @@
-SET
-    @start_date = "01/01/2022";
-
-SET
-    @end_date = "01/07/2022";
-
 SELECT
     a.state,
     round(
