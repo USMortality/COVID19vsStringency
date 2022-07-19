@@ -1,26 +1,14 @@
-SET
-    @start_date = DATE_FORMAT(
-        DATE_SUB(
-            str_to_date(@end_date, '%m/%d/%Y'),
-            INTERVAL 7 DAY
-        ),
-        '%m/%d/%Y'
-    );
-
 SELECT
     a.state,
     round(
-        (total_cases_end - total_cases_start) / population * 1000000 / datediff(
-            str_to_date(@end_date, '%m/%d/%Y'),
-            str_to_date(@start_date, '%m/%d/%Y')
-        )
-    ) AS total_cases_per_million_per_day,
+        (total_death_end - total_death_start) / population * 1000000
+    ) AS total_death_per_million_per_week,
     series_complete_pop_pct
 FROM
     (
         SELECT
             state,
-            sum(total_cases_start) AS 'total_cases_start'
+            sum(total_death_start) AS 'total_death_start'
         FROM
             (
                 SELECT
@@ -28,7 +16,7 @@ FROM
                         WHEN state IN ('NY', 'NYC') THEN 'NY'
                         ELSE state
                     END AS 'state',
-                    tot_cases AS total_cases_start
+                    tot_death AS total_death_start
                 FROM
                     owid.imp_us_cases
                 WHERE
@@ -40,7 +28,7 @@ FROM
     JOIN(
         SELECT
             state,
-            sum(total_cases_end) AS 'total_cases_end'
+            sum(total_death_end) AS 'total_death_end'
         FROM
             (
                 SELECT
@@ -48,7 +36,7 @@ FROM
                         WHEN state IN ('NY', 'NYC') THEN 'NY'
                         ELSE state
                     END AS 'state',
-                    tot_cases AS total_cases_end
+                    tot_death AS total_death_end
                 FROM
                     owid.imp_us_cases
                 WHERE

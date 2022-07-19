@@ -29,29 +29,28 @@ let date = startDate
 
 while (date < endDate) {
   const sDate = date
-  date = addDays(date, 1)
-  console.log(`Processing: ${date}`)
-  const outfile = `./out/weekly/covid_cases_vaccine_us_` +
+  date = addDays(date, 7)
+  const outfile = `./out/weekly/covid_deaths_vaccine_us_` +
     `${makeFileDateString(sDate)}_${makeFileDateString(date)}`
   const cmd = `mysql -h 127.0.0.1 -u root owid ` +
-    `-e "` +
-    // `SET @start_date = '${makeDateString(sDate)}'; ` +
+    `-e "SET @start_date = '${makeDateString(sDate)}'; ` +
     `SET @end_date = '${makeDateString(date)}'; ` +
-    `\\. query/covid_cases_vaccine_us_n.sql" >${outfile}.tsv`
+    `\\. query/covid_deaths_vaccine_us_n.sql" >${outfile}.tsv`
   await execAsync(cmd)
   const cmd2 = `make-chart --infile ${outfile}.tsv ` +
     `--outfile ${outfile}.png` +
-    ` --title 'COVID-19 Cases vs Vaccination Level [USA]'` +
-    ` --subtitle 'Time Frame: ${makeDateString(addDays(sDate, -28))}-` +
-    ` ${makeDateString(sDate)}; Source: OWID, CDC; Created by: @USMortality'` +
+    ` --title 'COVID-19 Deaths vs Vaccination Level [USA]'` +
+    ` --subtitle 'Time Frame: ${makeDateString(sDate)}-` +
+    ` ${makeDateString(date)}; Source: OWID, CDC; Created by: @USMortality'` +
     ` --xtitle 'Average COVID-19 Vaccinated (Fully)'` +
-    ` --ytitle 'Average Daily COVID-19 Cases per Million'` +
+    ` --ytitle 'Weekly COVID-19 Deaths per Million'` +
     ` --type scatter` +
     ` --xcolumnkey 'series_complete_pop_pct'` +
-    ` --ycolumnkey 'total_cases_per_million_per_day'` +
+    ` --ycolumnkey 'total_death_per_million_per_week'` +
     ` --labelcolumnkey 'state'`
+  console.log(cmd2)
   await execAsync(cmd2)
 }
 
-const cmd3 = `ffmpeg -hide_banner -loglevel error -r 30 -pattern_type glob -i './out/weekly/*.png' -c:v libx264 -vf "fps=60,format=yuv420p,scale=1200x670" ./out/weekly/_movie.mp4`
+const cmd3 = `ffmpeg -hide_banner -loglevel error -r 4 -pattern_type glob -i './out/weekly/*.png' -c:v libx264 -vf "fps=60,format=yuv420p,scale=1200x670" ./out/weekly/_movie.mp4`
 await execAsync(cmd3)
