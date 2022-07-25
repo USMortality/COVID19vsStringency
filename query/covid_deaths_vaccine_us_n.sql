@@ -1,3 +1,12 @@
+SET
+    @start_date = DATE_FORMAT(
+        DATE_SUB(
+            str_to_date(@end_date, '%m/%d/%Y'),
+            INTERVAL 7 DAY
+        ),
+        '%m/%d/%Y'
+    );
+
 SELECT
     a.state,
     round(

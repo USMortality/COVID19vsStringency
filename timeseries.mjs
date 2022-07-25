@@ -34,9 +34,7 @@ while (date < endDate) {
   const outfile = `./out/weekly/covid_cases_vaccine_us_` +
     `${makeFileDateString(sDate)}_${makeFileDateString(date)}`
   const cmd = `mysql -h 127.0.0.1 -u root owid ` +
-    `-e "` +
-    // `SET @start_date = '${makeDateString(sDate)}'; ` +
-    `SET @end_date = '${makeDateString(date)}'; ` +
+    `-e "SET @end_date = '${makeDateString(date)}'; ` +
     `\\. query/covid_cases_vaccine_us_n.sql" >${outfile}.tsv`
   await execAsync(cmd)
   const cmd2 = `make-chart --infile ${outfile}.tsv ` +
@@ -49,7 +47,12 @@ while (date < endDate) {
     ` --type scatter` +
     ` --xcolumnkey 'series_complete_pop_pct'` +
     ` --ycolumnkey 'total_cases_per_million_per_day'` +
-    ` --labelcolumnkey 'state'`
+    ` --labelcolumnkey 'state'` +
+    ` --yaxistype 'logarithmic'` +
+    ` --yaxismin 1` +
+    ` --yaxismax 10000` +
+    ` --xaxismin 0` +
+    ` --xaxismax 1`
   await execAsync(cmd2)
 }
 
